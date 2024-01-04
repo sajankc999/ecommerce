@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block base %}
+    <div class="container p-3 shadow-lg card" methos ="POST" enctype="multipart/form-data">
+        <form>
+            <h2>add your product!!!</h2>
+            <div class="mb-3">
+              <label class="form-label">name</label>
+              <input type="text" class="form-control" name ='name' required >
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label">price</label>
+                <input type="text" class="form-control" name ='name' required >
+            </div>  
+            
+            
+            <div class="mb-3">
+                <label class="form-label">category:</label>
+                
+                <select id="category" name="category">
+                  <option value="Electronics">Electronics</option>
+                  <option value="clothing">clothing</option>
+                  <option value="food">food</option>
+                  <option value="automobile">automobile</option>
+                </select>  
+                          
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label">picture</label>
+                <input type="file" class="form-control" name ='img' >
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" name ='description' ></textarea>
+            </div>
+              
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+
+    </div>
+{% endblock base %}
+
