@@ -1,5 +1,8 @@
 from django.shortcuts import render
-from .models import product_list
+from .models import *
+from .serializers import *
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Create your views here.
 
 def list_product(request):
@@ -23,5 +26,19 @@ def list_product(request):
             Pimg = img
         )
     return render(request,"add_product.html")
-        
+
+
+@api_view(['GET','POST'])
+def category_list(request):
+    if request.method=='GET':
+        category = Category.objects.all()
+        serializer = catagoryserializer(category,many=True)
+        return Response(serializer.data)   
+    else:
+        serializer = catagoryserializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({
+            "details":"new category created",
+        }) 
             
