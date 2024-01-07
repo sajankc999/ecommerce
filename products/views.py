@@ -3,6 +3,7 @@ from .models import *
 from .serializers import *
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 # Create your views here.
 
 def list_product(request):
@@ -41,4 +42,22 @@ def category_list(request):
         return Response({
             "details":"new category created",
         }) 
-            
+@api_view(['GET','DELETE','PUT'])
+
+def category_detail(request,pk):
+    category=Category.objects.get(pk=pk)
+
+    if request.method =="GET":
+        serailizer = catagoryserializer(category)
+        return Response(serailizer.data)
+    if request.method =='DELETE':
+        category.delete()
+        return Response(
+            status=status.HTTP_204_NO_CONTENT,
+        )
+    if request.method =='PUT':
+        serailizer=catagoryserializer(category,data = request.data)
+
+
+
+

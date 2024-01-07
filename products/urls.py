@@ -4,7 +4,7 @@ from products.views import *
 
 import products
 urlpatterns = [
-    path('categories',category_list)
-
+    path('categories',category_list),
+    path('category_detail/<pk>',category_detail),
     
 ]
