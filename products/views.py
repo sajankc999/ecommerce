@@ -1,11 +1,36 @@
 from django.shortcuts import render
 from .models import *
 from .serializers import *
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,action
 from rest_framework.response import Response
-from rest_framework import status,generics,mixins
+from rest_framework import status,generics,mixins,viewsets
 
 
+'''using viewset '''
+class categoryview(viewsets.ModelViewSet):
+    queryset=Category.objects.all()
+    serializer_class=categoryserializer
+    '''making custom function'''
+    @action(detail=True,methods=['GET'])
+    def verify(self,request,pk=None): 
+        return Response(
+            "function is running"
+        )
+'''using viewset module to ineteract with data'''
+
+
+class productListview(viewsets.ModelViewSet):
+    queryset=product_list.objects.all()
+    serializer_class=productlistserializer
+
+class customerListview(viewsets.ModelViewSet):
+    queryset=customer.objects.all()
+    serializer_class=customerserializer
+
+class userListview(viewsets.ModelViewSet):
+    queryset=User.objects.all()
+    serializer_class=Userserializer
+''' APIview use'''
 # class based view
 # from rest_framework.views import APIView
 # from django.http import Http404
@@ -35,21 +60,23 @@ from rest_framework import status,generics,mixins
 #             snippet.delete()
 #             return Response(status=status.HTTP_204_NO_CONTENT)  
 
-class CategoryList(generics.RetrieveUpdateDestroyAPIView):
-    queryset=Category.objects.all()
-    serializer_class=catagoryserializer
 
-class productList(generics.RetrieveUpdateDestroyAPIView):
-    queryset=product_list.objects.all()
-    serializer_class=productlistserializer
+'''using generic module to ineteract with data'''
+# class CategoryList(generics.RetrieveUpdateDestroyAPIView):
+#     queryset=Category.objects.all()
+#     serializer_class=catagoryserializer
 
-class customerList(generics.RetrieveUpdateDestroyAPIView):
-    queryset=customer.objects.all()
-    serializer_class=customerserializer
+# class productList(generics.RetrieveUpdateDestroyAPIView):
+#     queryset=product_list.objects.all()
+#     serializer_class=productlistserializer
 
-class userList(generics.RetrieveUpdateDestroyAPIView):
-    queryset=User.objects.all()
-    serializer_class=Userserializer
+# class customerList(generics.RetrieveUpdateDestroyAPIView):
+#     queryset=customer.objects.all()
+#     serializer_class=customerserializer
+
+# class userList(generics.RetrieveUpdateDestroyAPIView):
+#     queryset=User.objects.all()
+#     serializer_class=Userserializer
 
 def list_product(request):
     context ={
@@ -73,7 +100,7 @@ def list_product(request):
         )
     return render(request,"add_product.html")
 
-
+'''interacting with api manually'''
 # @api_view(['GET','POST'])
 # def category_list(request):
 #     if request.method=='GET':

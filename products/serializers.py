@@ -12,7 +12,7 @@ from .models import *
     #     return instance
 
 
-class catagoryserializer(serializers.ModelSerializer):
+class categoryserializer(serializers.ModelSerializer):
     class Meta:
         model =Category
         fields =['id','name'] # "__all__ for all data"
