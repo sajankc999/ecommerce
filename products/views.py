@@ -20,7 +20,7 @@ class categoryview(viewsets.ModelViewSet):
 
 
 class productListview(viewsets.ModelViewSet):
-    queryset=product_list.objects.all()
+    queryset=product_list.objects.select_related('category').all()
     serializer_class=productlistserializer
 
 class customerListview(viewsets.ModelViewSet):

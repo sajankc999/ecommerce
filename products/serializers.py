@@ -17,10 +17,20 @@ class categoryserializer(serializers.ModelSerializer):
         model =Category
         fields =['id','name'] # "__all__ for all data"
 class productlistserializer(serializers.ModelSerializer):
+    category = categoryserializer(read_only =True)
+    price_with_tax = serializers.SerializerMethodField()
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        source ='category',
+    )
     class Meta:
-        model=product_list
-        fields ="__all__"
 
+        model=product_list
+        fields =('name','price','description','price_with_tax','category','category_id',)
+
+
+    def get_price_with_tax(self,product):
+        return (float(product.price) * 0.13) + float(product.price)
 class customerserializer(serializers.ModelSerializer):
     class Meta:
         model=customer
