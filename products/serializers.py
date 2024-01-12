@@ -16,6 +16,8 @@ class categoryserializer(serializers.ModelSerializer):
     class Meta:
         model =Category
         fields =['id','name'] # "__all__ for all data"
+
+
 class productlistserializer(serializers.ModelSerializer):
     category = categoryserializer(read_only =True)
     price_with_tax = serializers.SerializerMethodField()
@@ -31,6 +33,8 @@ class productlistserializer(serializers.ModelSerializer):
 
     def get_price_with_tax(self,product):
         return (float(product.price) * 0.13) + float(product.price)
+    
+    
 class customerserializer(serializers.ModelSerializer):
     class Meta:
         model=customer
@@ -39,23 +43,23 @@ class customerserializer(serializers.ModelSerializer):
 class Userserializer(serializers.ModelSerializer):
     class Meta:
         model=User
-        field = ['email','username',]
+        fields = ['email','username',]
 class cartserializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
-        field = "__all__"
+        fields = "__all__"
 
 class orderserializer(serializers.ModelSerializer):
     class Meta:
         model = order
-        field = "__all__"
+        fields = "__all__"
 
 class orderitemserializer(serializers.ModelSerializer):
     class Meta:
         model = orderitem
-        field = "__all__"
+        fields = "__all__"
 
 class Reviewserializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        field = "__all__"
+        fields = "__all__"

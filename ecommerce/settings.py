@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     "products",
     "rest_framework",
     "debug_toolbar",
+    "core",
+    'drf_yasg',
+    'rest_framework.authtoken',
+
 
 ]
 
@@ -54,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware'
+
 
 ]
 
@@ -148,3 +154,11 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'rest_framework_xml.renderers.XMLRenderer'
+    ]
+}

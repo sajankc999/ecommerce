@@ -4,12 +4,12 @@ from .serializers import *
 from rest_framework.decorators import api_view,action
 from rest_framework.response import Response
 from rest_framework import status,generics,mixins,viewsets
-
-
+from .pagination import Custompagination
 '''using viewset '''
 class categoryview(viewsets.ModelViewSet):
     queryset=Category.objects.all()
     serializer_class=categoryserializer
+    pagination_class=Custompagination
     '''making custom function'''
     @action(detail=True,methods=['GET'])
     def verify(self,request,pk=None): 
@@ -77,7 +77,7 @@ class userListview(viewsets.ModelViewSet):
 # class userList(generics.RetrieveUpdateDestroyAPIView):
 #     queryset=User.objects.all()
 #     serializer_class=Userserializer
-
+'''form data fetching'''
 def list_product(request):
     context ={
         "error":"no name was passed"

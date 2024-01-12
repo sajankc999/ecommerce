@@ -4,6 +4,7 @@ from products.views import *
 from rest_framework import routers
 
 import products
+
 # urlpatterns = [
 #     # path('categories',category_list),
 #     # path('category_detail/<pk>',category_detail),
@@ -40,4 +41,6 @@ router.register('customer',customerListview,basename='customer')
 router.register('userList',userListview,basename='userList')
 router.register('category',categoryview,basename='category')
 
-urlpatterns = []+router.urls
+urlpatterns = [
+    
+]+router.urls
