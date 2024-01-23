@@ -29,6 +29,7 @@ class customer(models.Model):
     gender = models.CharField(max_length=50)
     phone_number = models.BigIntegerField()
     user = models.ForeignKey(User, on_delete=models.CASCADE,default="")
+    age = models.IntegerField(default = 18)
     def __str__(self):
         return self.user
 

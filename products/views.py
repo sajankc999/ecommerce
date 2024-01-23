@@ -5,11 +5,19 @@ from rest_framework.decorators import api_view,action
 from rest_framework.response import Response
 from rest_framework import status,generics,mixins,viewsets
 from .pagination import Custompagination
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
+
+from .filters import CustomeUserFilter
 '''using viewset '''
 class categoryview(viewsets.ModelViewSet):
     queryset=Category.objects.all()
     serializer_class=categoryserializer
     pagination_class=Custompagination
+    permission_classes=[
+        IsAuthenticatedOrReadOnly,
+    ]
     '''making custom function'''
     @action(detail=True,methods=['GET'])
     def verify(self,request,pk=None): 
@@ -22,13 +30,21 @@ class categoryview(viewsets.ModelViewSet):
 class productListview(viewsets.ModelViewSet):
     queryset=product_list.objects.select_related('category').all()
     serializer_class=productlistserializer
+    filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
+    filterset_fields = ['category']
+    search_fields =['name',"price"]
+    ordering_fields=['price',]
+
 
 class customerListview(viewsets.ModelViewSet):
     queryset=customer.objects.all()
     serializer_class=customerserializer
+    filter_backends = (DjangoFilterBackend,filters.SearchFilter,)
+    filterset_class = CustomeUserFilter
+    
 
 class userListview(viewsets.ModelViewSet):
-    queryset=User.objects.all()
+    queryset=customer.objects.all()
     serializer_class=Userserializer
 ''' APIview use'''
 # class based view

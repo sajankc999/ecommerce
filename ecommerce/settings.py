@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "core",
     'drf_yasg',
     'rest_framework.authtoken',
+    "django_filters",
+    'djoser',
 
 
 ]
@@ -63,13 +65,13 @@ MIDDLEWARE = [
 
 ]
 
-ROOT_URLCONF = 'ecommerce.urls'
+ROOT_URLCONF = 'ecommerce.urls' #changing the path of auth user
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR,"templates")
+            os.path.join(BASE_DIR,"templates") # this must be defined to use custom templates folder
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -92,7 +94,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 DATABASES = {
 	'default': {
 		'ENGINE': 'django.db.backends.mysql',
-		'NAME': 'ecommerce',
+		'NAME': 'ecom',
 		'USER': 'root',
 		'PASSWORD': '',
 		'HOST':'localhost',
@@ -159,6 +161,31 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-        'rest_framework_xml.renderers.XMLRenderer'
-    ]
+        'rest_framework_xml.renderers.XMLRenderer',
+
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        ],
+        
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
+}
+
+AUTH_USER_MODEL ="core.User"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587 
+EMAIL_HOST_USER = "ce6519de42a71a"
+EMAIL_HOST_PASSWORD = "0efdeecf7e19a2"
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'SERIALIZERS': {},
 }

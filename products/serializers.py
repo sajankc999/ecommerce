@@ -35,15 +35,16 @@ class productlistserializer(serializers.ModelSerializer):
         return (float(product.price) * 0.13) + float(product.price)
     
     
-class customerserializer(serializers.ModelSerializer):
-    class Meta:
-        model=customer
-        fields="__all__"
 
 class Userserializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields = ['email','username',]
+class customerserializer(serializers.ModelSerializer):
+    user = Userserializer(read_only=True)
+    class Meta:
+        model=customer
+        fields="__all__"
 class cartserializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
