@@ -5,25 +5,25 @@ from rest_framework.decorators import api_view,action
 from rest_framework.response import Response
 from rest_framework import status,generics,mixins,viewsets
 from .pagination import Custompagination
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
 from .filters import CustomeUserFilter
 '''using viewset '''
-class categoryview(viewsets.ModelViewSet):
-    queryset=Category.objects.all()
-    serializer_class=categoryserializer
-    pagination_class=Custompagination
-    permission_classes=[
-        IsAuthenticatedOrReadOnly,
-    ]
-    '''making custom function'''
-    @action(detail=True,methods=['GET'])
-    def verify(self,request,pk=None): 
-        return Response(
-            "function is running"
-        )
+# class categoryview(viewsets.ModelViewSet):
+#     queryset=Category.objects.all()
+#     serializer_class=categoryserializer
+#     pagination_class=Custompagination
+#     permission_classes=[
+#         IsAuthenticatedOrReadOnly,
+#     ]
+#     '''making custom function'''
+#     @action(detail=True,methods=['GET'])
+#     def verify(self,request,pk=None): 
+#         return Response(
+#             "function is running"
+#         )
 '''using viewset module to ineteract with data'''
 
 
@@ -37,15 +37,15 @@ class productListview(viewsets.ModelViewSet):
 
 
 class customerListview(viewsets.ModelViewSet):
-    queryset=customer.objects.all()
+    queryset=Customer.objects.all()
     serializer_class=customerserializer
     filter_backends = (DjangoFilterBackend,filters.SearchFilter,)
     filterset_class = CustomeUserFilter
     
 
-class userListview(viewsets.ModelViewSet):
-    queryset=customer.objects.all()
-    serializer_class=Userserializer
+# class userListview(viewsets.ModelViewSet):
+#     queryset=Customer.objects.all()
+#     serializer_class=Userserializer
 ''' APIview use'''
 # class based view
 # from rest_framework.views import APIView
@@ -153,3 +153,40 @@ def list_product(request):
 
 
 
+class CartViewset(viewsets.GenericViewSet):
+    queryset=Cart.objects.all()
+    serializer_class=CartSerializer
+    # pagination_class=Custompagination
+    permission_classes=(IsAuthenticated,)
+
+    def list(self,request,*args, **kwargs):
+        customer= Customer.objects.filter(user = self.request.user).first()
+        cart,_ = Cart.objects.prefetch_related('items').get_or_create(customer=customer)
+        serializer = CartSerializer(cart)
+        return Response(serializer.data)
+        
+    
+class cartItemViewset(viewsets.ModelViewSet):
+    queryset=cartItem.objects.all()
+    serializer_class=CartItemSerializer
+    permission_classes=(IsAuthenticated,)
+    # pagination_class=Custompagination   
+
+    def get_queryset(self):
+        customer=Customer.objects.filter(user=self.request.user).first()
+        cart,_ = Cart.objects.prefetch_related('items').get_or_create(customer=customer)
+
+        return cartItem.objects.filter(
+            cart=cart
+        )
+    # def post(self):
+    #     data = self.request
+    #     if  cartItem.objects.get(product=data.get("product_id")):
+    #         data.get
+
+
+class OrderViewset(viewsets.ModelViewSet):
+    queryset= order.objects.all()
+    serializer_class = Orderserializer
+    permission_classes = (IsAuthenticated,)
+    

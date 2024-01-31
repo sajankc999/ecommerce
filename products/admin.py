@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+
 # Register your models here.
 
 
@@ -17,17 +18,17 @@ class product_listAdmin(admin.ModelAdmin):
     list_per_page=10
     # autocomplete_fields=('name',)
 
-@admin.register(User)
-class userAdmin(admin.ModelAdmin):
-    list_display = ('username','email','password')
-    list_per_page =10
-    search_fields=('username','email')
+# @admin.register(User)
+# class userAdmin(admin.ModelAdmin):
+#     list_display = ('username','email','password')
+#     list_per_page =10
+#     search_fields=('username','email')
 
-@admin.register(customer)
+@admin.register(Customer)
 class customerAdmin(admin.ModelAdmin):
     list_display = ('address','gender','phone_number','user')
     list_per_page =10
-    search_fields=('phone_number',)
+    search_fields=('phone_number','user__email')
 
 
 class orderitemInline(admin.TabularInline):
@@ -38,7 +39,9 @@ class orderitemInline(admin.TabularInline):
 class cartAdmin(admin.ModelAdmin):
     list_display = ('customer',)
     list_per_page=10
-
+@admin.register(cartItem)
+class cartItemAdmin(admin.ModelAdmin):
+    list_display =['cart','product','quantity']
 
 @admin.register(order)
 class orderAdmin(admin.ModelAdmin):

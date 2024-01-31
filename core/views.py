@@ -110,7 +110,7 @@ def register(request):
         user=userobj.objects.create_user(email=email,password=password)
         if user:
             send_mail(
-                "registration successfull",
+                "verification link . PLEAE DONOT SHARE",
                 "hello",
                 "ecommerce@gmail.com",
                 [user.email],

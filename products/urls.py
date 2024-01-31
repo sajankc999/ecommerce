@@ -35,11 +35,14 @@ import products
 '''using routers modules cuts the lines with ease. we dont have to specify the request types... '''
 
 router= routers.SimpleRouter()
-router.register('category',categoryview,basename='category')
+# router.register('category',categoryview,basename='category')
 router.register('product',productListview,basename='product')
 router.register('customer',customerListview,basename='customer')
-router.register('userList',userListview,basename='userList')
-router.register('category',categoryview,basename='category')
+# router.register('category',customerListview,basename='category')
+router.register('cart',CartViewset,basename='cart')
+router.register('cartItem',cartItemViewset,basename='cartItem')
+router.register('order',OrderViewset,basename='order')
+
 
 urlpatterns = [
     

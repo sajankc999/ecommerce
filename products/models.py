@@ -1,7 +1,7 @@
 from django.db import models
-
+from django.contrib.auth import get_user_model
 # Create your models here.
-
+user_core = get_user_model()
 class Category(models.Model):
     name = models.CharField(max_length=100)
     def __str__(self):
@@ -17,24 +17,39 @@ class product_list(models.Model):
         return self.name
 
 
-class User(models.Model):
-    username=models.CharField(max_length=55)
-    email= models.CharField(max_length = 100)
-    password = models.CharField( max_length=100)
-    def __str__(self):
-        return self.username
+# class User(models.Model):
+#     username=models.CharField(max_length=55)
+#     email= models.CharField(max_length = 100)
+#     password = models.CharField( max_length=100)
+#     def __str__(self):
+#         return self.username
 
-class customer(models.Model):
-    address =models.IntegerField()
-    gender = models.CharField(max_length=50)
-    phone_number = models.BigIntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE,default="")
-    age = models.IntegerField(default = 18)
+class Customer(models.Model):
+    female = "F"
+    male ="M"
+    Gender =(
+        (female,"female"),
+        (male,"Male")
+    )
+    address =models.CharField(max_length=50,null =True,blank =True)
+    gender = models.CharField(max_length=50, choices = Gender,null =True,blank =True)
+    phone_number = models.BigIntegerField(null =True,blank =True)
+    user = models.ForeignKey(user_core, on_delete=models.CASCADE)
+    age = models.IntegerField(default = 18,null =True,blank =True)
+    # user = models.ForeignKey(User,on_delete= models.CASCADE)
     def __str__(self):
-        return self.user
+        return self.user.username
 
 class Cart(models.Model):
-    customer = models.ForeignKey(customer,on_delete = models.CASCADE)
+    customer = models.ForeignKey(Customer,on_delete = models.CASCADE)
+
+    def __str__(self):
+        return self.customer.user.email
+
+class cartItem(models.Model):
+    cart = models.ForeignKey(Cart,on_delete = models.CASCADE,related_name='items') #related_name is used to swap identity
+    product = models.ForeignKey(product_list,on_delete = models.CASCADE)
+    quantity = models.IntegerField()
 
        
 
@@ -73,7 +88,7 @@ class orderitem(models.Model):
 
 class Review(models.Model):
     product = models.ForeignKey(product_list,on_delete=models.CASCADE)
-    customer = models.ForeignKey(customer,on_delete =models.CASCADE)
+    customer = models.ForeignKey(Customer,on_delete =models.CASCADE)
     star = models.IntegerField()
     def __str__(self):
         return self.star

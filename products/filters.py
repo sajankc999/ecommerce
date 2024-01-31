@@ -1,8 +1,8 @@
 from django_filters import FilterSet
-from .models import customer
+from .models import Customer
 class CustomeUserFilter(FilterSet):
     class Meta:
-        model = customer
+        model = Customer
         fields = {
             
             # "gender":['gt','lt'],
